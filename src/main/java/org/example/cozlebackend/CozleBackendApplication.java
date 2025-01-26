@@ -8,5 +8,4 @@ public class CozleBackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(CozleBackendApplication.class, args);
     }
-
 }

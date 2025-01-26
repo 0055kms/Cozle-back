@@ -11,9 +11,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 public class JwtTokenFilter extends OncePerRequestFilter {
-    private JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
     private final static String HEADER_STRING = "Authorization";
     private final static String TOKEN_PREFIX = "Bearer ";
+
+    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @Override
     protected void doFilterInternal(
@@ -21,12 +25,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
 
-        String header = request.getHeader(HEADER_STRING);
-        String accessToken = getAccessToken(header);
+        try {
+            String header = request.getHeader(HEADER_STRING);
+            String accessToken = getAccessToken(header);
 
-        if (jwtTokenProvider.validToken(accessToken)) {
-            Authentication auth = jwtTokenProvider.getAuthentication(accessToken);
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            if (accessToken != null && jwtTokenProvider.validToken(accessToken)) {
+                Authentication auth = jwtTokenProvider.getAuthentication(accessToken);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        } catch (Exception e) {
+            System.err.println("JWT 토큰 검증 실패: " + e.getMessage());
         }
 
         filterChain.doFilter(request, response);

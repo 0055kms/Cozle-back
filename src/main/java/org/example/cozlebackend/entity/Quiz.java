@@ -40,11 +40,9 @@ public class Quiz {
     @Column(name = "difficulty", nullable = false)
     private Integer difficulty;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 

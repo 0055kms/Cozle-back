@@ -47,11 +47,9 @@ public class QuizSubmission {
     @Column(name = "earned_coin")
     private Integer earnedCoin;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
