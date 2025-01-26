@@ -1,6 +1,15 @@
 spring:
-  application:
-    name: cozle-backend
+  datasource:
+    url: jdbc:mysql://cozledb.cts8iikm8y4a.ap-northeast-2.rds.amazonaws.com:3306/cozleDB
+    username: master
+    password: 03171afb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
   jwt:
-  
+    issuer: 0055kms
+    secretKey: vQ3JLkU1mdQms5vZCZUhm+GBpGI+Rsug72oPxCiT1yY=

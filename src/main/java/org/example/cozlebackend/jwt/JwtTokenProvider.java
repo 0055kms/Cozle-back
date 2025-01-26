@@ -28,7 +28,6 @@ public class JwtTokenProvider {
         return makeToken(new Date(now.getTime() + expiredAt.toMillis()), user);
     }
 
-    // ✅ JWT 토큰 생성 메서드
     private String makeToken(Date expiry, User user) {
         Date now = new Date();
 
