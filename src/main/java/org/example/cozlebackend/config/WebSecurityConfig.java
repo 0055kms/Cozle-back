@@ -1,6 +1,8 @@
 package org.example.cozlebackend.config;
 
 import lombok.RequiredArgsConstructor;
+import org.example.cozlebackend.jwt.JwtTokenFilter;
+import org.example.cozlebackend.jwt.JwtTokenProvider;
 import org.example.cozlebackend.service.UserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class WebSecurityConfig {
 
+    private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
 
     @Bean
@@ -26,8 +29,13 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/auth/signup").permitAll()
+                        .requestMatchers("/auth/login", "/auth/signup", "/api/token").permitAll()
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // Swagger 경로 허용
                         .anyRequest().authenticated()
+                )
+                .addFilterBefore(
+                        new JwtTokenFilter(jwtTokenProvider),
+                        org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
                 )
                 .build();
     }
